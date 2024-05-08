@@ -1991,12 +1991,12 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			$outerQuery->setMaxResults($maxResults);
 
 			for ($attempt = $objectsCount = 0; $attempt < 3 && $objectsCount < $limit; $attempt++) {
-				$objectsCount = array_push($calendarObjects, ...$this->searchCalendarObjectsByQuery($outerQuery, $start, $end));
+				$objectsCount = array_push($calendarObjects, ...$this->searchCalendarObjects($outerQuery, $start, $end));
 				$outerQuery->setFirstResult($offset += $maxResults);
 			}
 		} else {
 			$outerQuery->setMaxResults($limit);
-			$calendarObjects = $this->searchCalendarObjectsByQuery($outerQuery, $start, $end);
+			$calendarObjects = $this->searchCalendarObjects($outerQuery, $start, $end);
 		}
 
 		return array_map(function ($o) use ($options) {
@@ -2037,7 +2037,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		}, $calendarObjects);
 	}
 
-	private function searchCalendarObjectsByQuery(IQueryBuilder $query, DateTimeInterface|null $start, DateTimeInterface|null $end): array {
+	private function searchCalendarObjects(IQueryBuilder $query, DateTimeInterface|null $start, DateTimeInterface|null $end): array {
 		$calendarObjects = [];
 		$filterByTimeRange = ($start instanceof DateTimeInterface) || ($end instanceof DateTimeInterface);
 
