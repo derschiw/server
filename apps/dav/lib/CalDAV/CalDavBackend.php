@@ -1994,6 +1994,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				$objectsCount = array_push($calendarObjects, ...$this->searchCalendarObjects($outerQuery, $start, $end));
 				$outerQuery->setFirstResult($offset += $maxResults);
 			}
+
+			$calendarObjects = array_slice($calendarObjects, 0, $limit, false);
 		} else {
 			$outerQuery->setMaxResults($limit);
 			$calendarObjects = $this->searchCalendarObjects($outerQuery, $start, $end);
