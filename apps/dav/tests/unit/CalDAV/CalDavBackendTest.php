@@ -1655,4 +1655,54 @@ EOD;
 			'Recurrence starting before requested start',
 		);
 	}
+
+	public function testSearchWithLimitAndTimeRangeShouldNotReturnMoreObjectsThenLimit() {
+		$calendarId = $this->createTestCalendar();
+		$calendarInfo = [
+			'id' => $calendarId,
+			'principaluri' => 'user1',
+			'{http://owncloud.org/ns}owner-principal' => 'user1',
+		];
+
+		$testFiles = [
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-1.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-2.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-3.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-4.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-5.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-6.ics',
+		];
+
+		foreach ($testFiles as $testFile) {
+			$objectUri = static::getUniqueID('search-limit-timerange-');
+			$calendarData = \file_get_contents($testFile);
+			$this->backend->createCalendarObject($calendarId, $objectUri, $calendarData);
+		}
+
+		$start = new DateTimeImmutable('2024-05-06T00:00:00Z');
+		$end = $start->add(new DateInterval('P14D'));
+
+		$results = $this->backend->search(
+			$calendarInfo,
+			'',
+			[],
+			[
+				'timerange' => [
+					'start' => $start,
+					'end' => $end,
+				]
+			],
+			1,
+			null,
+		);
+
+		$this->assertCount(1, $results);
+
+		$this->assertEquals('Cake Tasting', $results[0]['objects'][0]['SUMMARY'][0]);
+		$this->assertGreaterThanOrEqual(
+			$start->getTimestamp(),
+			$results[0]['objects'][0]['DTSTART'][0]->getTimestamp(),
+			'Recurrence starting before requested start',
+		);
+	}
 }
