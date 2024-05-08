@@ -1608,12 +1608,12 @@ EOD;
 		];
 
 		$testFiles = [
-			__DIR__ . '/../../misc/caldav-search-limit-timerange-event-a.ics',
-			__DIR__ . '/../../misc/caldav-search-limit-timerange-event-b.ics',
-			__DIR__ . '/../../misc/caldav-search-limit-timerange-event-c.ics',
-			__DIR__ . '/../../misc/caldav-search-limit-timerange-event-d.ics',
-			__DIR__ . '/../../misc/caldav-search-limit-timerange-event-cake.ics',
-			__DIR__ . '/../../misc/caldav-search-limit-timerange-event-pasta.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-1.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-2.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-3.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-4.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-5.ics',
+			__DIR__ . '/../../misc/caldav-search-limit-timerange-6.ics',
 		];
 
 		foreach ($testFiles as $testFile) {
